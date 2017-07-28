@@ -8,31 +8,36 @@ function debug(){
 		switch(inputs[i].type)
 		{
 			case 'date':
-		    case 'text':
+			case 'text':
 				//set the value of each input to it's ID
 				inputs[i].value = ( '' != inputs[i].id ? inputs[i].id : inputs[i].name );
+
 				//make sure we do not violate the maxlength attribute
 				if( -1 < inputs[i].maxLength && inputs[i].value.length > inputs[i].maxLength ){
 					inputs[i].value = inputs[i].value.substring(0, inputs[i].maxLength);
 				}
 				break;
+
 			case 'checkbox':
 			case 'radio':
 				//check it
-			    inputs[i].checked = true;
-			    //fire change event
-			    if ("createEvent" in document) {
-			        var evt = document.createEvent("HTMLEvents");
-			        evt.initEvent("change", false, true);
-			        inputs[i].dispatchEvent(evt);
-			    } else {
-			        inputs[i].fireEvent("onchange");
-			    }
+				inputs[i].checked = true;
+
+				//fire change event
+				if ("createEvent" in document) {
+					var evt = document.createEvent("HTMLEvents");
+					evt.initEvent("change", false, true);
+					inputs[i].dispatchEvent(evt);
+				} else {
+					inputs[i].fireEvent("onchange");
+				}
 
 				break;
+
 			case 'hidden':
 			case 'submit':
 				break;
+
 			default:
 				console.log( 'Trouble debugging this input type: ' + inputs[i].type );
 		}
