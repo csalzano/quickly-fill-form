@@ -5,12 +5,24 @@
 function debug(){
 	var inputs = document.getElementsByTagName('input');
 	for (var i=0, max=inputs.length; i < max; i++) {
+
+		var changed = true; //was this control's value changed?
+
 		switch(inputs[i].type)
 		{
 			case 'date':
 			case 'text':
-				//set the value of each input to it's ID
-				inputs[i].value = ( '' != inputs[i].id ? inputs[i].id : inputs[i].name );
+				//set the value of each input to it's ID, name, some letters, and some numbers
+				inputs[i].value = ( '' != inputs[i].id ? inputs[i].id : inputs[i].name ) + '0123456789abcdefghij';
+
+				//fire the input event for the control
+				if ("createEvent" in document) {
+					var evt = document.createEvent("HTMLEvents");
+					evt.initEvent("input", false, true);
+					inputs[i].dispatchEvent(evt);
+				} else {
+					inputs[i].fireEvent("oninput");
+				}
 
 				//make sure we do not violate the maxlength attribute
 				if( -1 < inputs[i].maxLength && inputs[i].value.length > inputs[i].maxLength ){
@@ -22,16 +34,6 @@ function debug(){
 			case 'radio':
 				//check it
 				inputs[i].checked = true;
-
-				//fire change event
-				if ("createEvent" in document) {
-					var evt = document.createEvent("HTMLEvents");
-					evt.initEvent("change", false, true);
-					inputs[i].dispatchEvent(evt);
-				} else {
-					inputs[i].fireEvent("onchange");
-				}
-
 				break;
 
 			case 'hidden':
@@ -40,6 +42,19 @@ function debug(){
 
 			default:
 				console.log( 'Trouble debugging this input type: ' + inputs[i].type );
+				//https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#Form_<input>_types
+				changed = false;
+		}
+
+		if( changed ) {
+			//fire the change event for the control
+			if ("createEvent" in document) {
+				var evt = document.createEvent("HTMLEvents");
+				evt.initEvent("change", false, true);
+				inputs[i].dispatchEvent(evt);
+			} else {
+				inputs[i].fireEvent("onchange");
+			}
 		}
 	}
 	var selects = document.getElementsByTagName('select');
