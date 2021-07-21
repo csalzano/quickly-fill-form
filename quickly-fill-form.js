@@ -36,6 +36,32 @@ function debug(){
 				inputs[i].checked = true;
 				break;
 
+			case 'tel':
+				inputs[i].value = '11111111111';
+				
+				//fire the input event for the control
+				if ("createEvent" in document) {
+					var evt = document.createEvent("HTMLEvents");
+					evt.initEvent("input", false, true);
+					inputs[i].dispatchEvent(evt);
+				} else {
+					inputs[i].fireEvent("oninput");
+				}
+				break;
+
+			case 'email':
+				inputs[i].value = 'foo@example.com';
+				
+				//fire the input event for the control
+				if ("createEvent" in document) {
+					var evt = document.createEvent("HTMLEvents");
+					evt.initEvent("input", false, true);
+					inputs[i].dispatchEvent(evt);
+				} else {
+					inputs[i].fireEvent("oninput");
+				}			
+				break;
+
 			case 'hidden':
 			case 'submit':
 				break;
