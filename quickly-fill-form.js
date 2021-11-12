@@ -6,6 +6,12 @@ function debug(){
 	var inputs = document.getElementsByTagName('input');
 	for (var i=0, max=inputs.length; i < max; i++) {
 
+		if( '_validate_email' == inputs[i].id )
+		{
+			//Do not populate the Advanced Custom Fields spam honey pot
+			continue;
+		}
+
 		var changed = true; //was this control's value changed?
 
 		switch(inputs[i].type)
