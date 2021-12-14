@@ -18,6 +18,12 @@ function debug(){
 		{
 			case 'date':
 			case 'text':
+				//ignore this input if it already has a value
+				if( '' != inputs[i].value )
+				{
+					continue;
+				}
+
 				//set the value of each input to it's ID, name, some letters, and some numbers
 				inputs[i].value = ( '' != inputs[i].id ? inputs[i].id : inputs[i].name ) + '0123456789abcdefghij';
 
@@ -43,6 +49,12 @@ function debug(){
 				break;
 
 			case 'tel':
+				//ignore this input if it already has a value
+				if( '' != inputs[i].value )
+				{
+					continue;
+				}
+
 				inputs[i].value = '11111111111';
 				
 				//fire the input event for the control
@@ -56,6 +68,12 @@ function debug(){
 				break;
 
 			case 'email':
+				//ignore this input if it already has a value
+				if( '' != inputs[i].value )
+				{
+					continue;
+				}
+
 				inputs[i].value = 'foo@example.com';
 				
 				//fire the input event for the control
