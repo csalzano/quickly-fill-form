@@ -48,6 +48,7 @@ function debug(){
 				inputs[i].checked = true;
 				break;
 
+			case 'number':
 			case 'tel':
 				//ignore this input if it already has a value
 				if( '' != inputs[i].value )
