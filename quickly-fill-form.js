@@ -17,6 +17,7 @@ function debug(){
 		switch(inputs[i].type)
 		{
 			case 'date':
+			case 'password':
 			case 'text':
 				//ignore this input if it already has a value
 				if( '' != inputs[i].value )
@@ -85,6 +86,16 @@ function debug(){
 				} else {
 					inputs[i].fireEvent("oninput");
 				}			
+				break;
+
+			case 'url':
+				//ignore this input if it already has a value
+				if( '' != inputs[i].value )
+				{
+					continue;
+				}
+
+				inputs[i].value = 'https://example.com';
 				break;
 
 			case 'hidden':
