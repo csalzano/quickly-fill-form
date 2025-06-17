@@ -45,8 +45,11 @@ function debug(){
 
 			case 'checkbox':
 			case 'radio':
-				//check it
-				inputs[i].checked = true;
+				// Is this control visible?
+				if ( inputs[i].checkVisibility() ) {
+					// Yes, check it.
+					inputs[i].checked = true;
+				}
 				break;
 
 			case 'number':
