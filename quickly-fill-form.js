@@ -132,3 +132,4 @@ function debug(){
 		textareas[i].value = ( '' != textareas[i].id ? textareas[i].id : textareas[i].name );
 	}
 }
+debug();
