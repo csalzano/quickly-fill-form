@@ -3,6 +3,16 @@
  * Tested in Chrome 59.0.3071.115, Firefox 54.0.1, Edge 40.15063.0.0, and IE 11.483.15063.0
  */
 function debug(){
+	/**
+	 * Gravity Forms rejects @example.com addresses, so use the current site's
+	 * own domain (www. stripped). Fall back to example.com on hosts like
+	 * localhost or a bare IP where there is no real domain to borrow.
+	 */
+	var emailDomain = window.location.hostname.replace( /^www\./, '' );
+	if ( -1 == emailDomain.indexOf( '.' ) || /^[\d.]+$/.test( emailDomain ) ) {
+		emailDomain = 'example.com';
+	}
+
 	var inputs = document.getElementsByTagName('input');
 	for (var i=0, max=inputs.length; i < max; i++) {
 
@@ -79,7 +89,7 @@ function debug(){
 					continue;
 				}
 
-				inputs[i].value = 'foo@example.com';
+				inputs[i].value = 'quickly-fill-form@' + emailDomain;
 				
 				//fire the input event for the control
 				if ("createEvent" in document) {
