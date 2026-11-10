@@ -42,6 +42,22 @@ function debug(){
 			|| '99/99/9999' == input.getAttribute( 'data-mask' );
 	}
 
+	/**
+	 * Should this checkbox or radio be left alone? Inside a Gravity Forms
+	 * field, skip it only when conditional logic hid the field. A collapsed
+	 * section or inactive tab (JetSloth add-ons) also hides fields, but those
+	 * fields are still submitted and validated, so they need values too.
+	 * Outside Gravity Forms, skip anything that is not visible.
+	 */
+	function isHidden( input ) {
+		var field = input.closest ? input.closest( '.gfield' ) : null;
+		if ( field ) {
+			return 'hidden' == field.getAttribute( 'data-conditional-logic' )
+				|| 'none' == field.style.display;
+		}
+		return input.checkVisibility ? ! input.checkVisibility() : false;
+	}
+
 	var inputs = document.getElementsByTagName('input');
 	for (var i=0, max=inputs.length; i < max; i++) {
 
@@ -88,9 +104,7 @@ function debug(){
 
 			case 'checkbox':
 			case 'radio':
-				// Is this control visible?
-				if ( inputs[i].checkVisibility() ) {
-					// Yes, check it.
+				if ( ! isHidden( inputs[i] ) ) {
 					inputs[i].checked = true;
 				}
 				break;
