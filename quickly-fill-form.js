@@ -13,6 +13,35 @@ function debug(){
 		emailDomain = 'example.com';
 	}
 
+	/**
+	 * Returns today's date formatted for a date input. Gravity Forms puts the
+	 * format in a class on datepicker inputs (mdy, dmy, dmy_dash, dmy_dot,
+	 * ymd_slash, ymd_dash, ymd_dot). Native type="date" inputs need ymd_dash.
+	 */
+	function dateValue( input ) {
+		var now = new Date(),
+			y = String( now.getFullYear() ),
+			m = ( '0' + ( now.getMonth() + 1 ) ).slice( -2 ),
+			d = ( '0' + now.getDate() ).slice( -2 );
+		if ( 'date' == input.type ) {
+			return y + '-' + m + '-' + d;
+		}
+		var c = ' ' + input.className + ' ';
+		if ( -1 < c.indexOf( ' ymd_dash ' ) ) { return y + '-' + m + '-' + d; }
+		if ( -1 < c.indexOf( ' ymd_dot ' ) ) { return y + '.' + m + '.' + d; }
+		if ( -1 < c.indexOf( ' ymd_slash ' ) ) { return y + '/' + m + '/' + d; }
+		if ( -1 < c.indexOf( ' dmy_dash ' ) ) { return d + '-' + m + '-' + y; }
+		if ( -1 < c.indexOf( ' dmy_dot ' ) ) { return d + '.' + m + '.' + y; }
+		if ( -1 < c.indexOf( ' dmy ' ) ) { return d + '/' + m + '/' + y; }
+		return m + '/' + d + '/' + y; //mdy, the Gravity Forms default
+	}
+
+	function isDateField( input ) {
+		return 'date' == input.type
+			|| -1 < ( ' ' + input.className + ' ' ).indexOf( ' datepicker ' )
+			|| '99/99/9999' == input.getAttribute( 'data-mask' );
+	}
+
 	var inputs = document.getElementsByTagName('input');
 	for (var i=0, max=inputs.length; i < max; i++) {
 
@@ -35,8 +64,12 @@ function debug(){
 					continue;
 				}
 
-				//set the value of each input to it's ID, name, some letters, and some numbers
-				inputs[i].value = ( '' != inputs[i].id ? inputs[i].id : inputs[i].name ) + '0123456789abcdefghij';
+				if ( isDateField( inputs[i] ) ) {
+					inputs[i].value = dateValue( inputs[i] );
+				} else {
+					//set the value of each input to it's ID, name, some letters, and some numbers
+					inputs[i].value = ( '' != inputs[i].id ? inputs[i].id : inputs[i].name ) + '0123456789abcdefghij';
+				}
 
 				//fire the input event for the control
 				if ("createEvent" in document) {
